@@ -1,0 +1,32 @@
+services:
+  - type: worker              # Background worker (no HTTP port needed)
+    name: telegram-caption-bot
+    runtime: python
+    plan: free                # Change to "starter" or higher for production
+    region: oregon            # Choose the region closest to your users
+
+    # ── Build ──────────────────────────────────────────────────────────────
+    buildCommand: pip install -r requirements.txt
+
+    # ── Start ──────────────────────────────────────────────────────────────
+    startCommand: python main.py
+
+    # ── Environment variables ──────────────────────────────────────────────
+    # Set these in the Render dashboard → Environment tab.
+    # They are listed here for reference only; do NOT hard-code secrets.
+    envVars:
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+      - key: OWNER_ID
+        sync: false
+      - key: SOURCE_CHANNEL
+        sync: false
+      - key: DESTINATION_CHANNEL
+        sync: false
+      # Render sets this automatically; used by Pyrogram's session storage
+      - key: PYTHON_VERSION
+        value: "3.11.9"
